@@ -15,6 +15,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 registerLocaleData(en);
 
@@ -22,7 +24,7 @@ registerLocaleData(en);
   declarations: [
     AppComponent,
     HardwareDetailComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,9 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     NzLayoutModule,
-    NzButtonModule
+    NzButtonModule,
+    NzMenuModule,
+    NzBreadCrumbModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

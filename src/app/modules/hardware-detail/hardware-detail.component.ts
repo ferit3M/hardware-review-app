@@ -5,7 +5,7 @@ import { HARDWARE } from 'src/app/mock-data/hardware';
 @Component({
   selector: 'app-hardware-detail',
   templateUrl: './hardware-detail.component.html',
-  styleUrls: ['./hardware-detail.component.css']
+  styleUrls: ['./hardware-detail.component.scss']
 })
 export class HardwareDetailComponent implements OnInit {
 
