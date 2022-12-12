@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HardwareComponent } from 'src/app/interfaces/hardware-component';
 import { HARDWARE } from 'src/app/mock-data/hardware';
+import { HardwareComponentsService } from 'src/app/services/hardware-components.service';
 
 @Component({
   selector: 'app-hardware-detail',
@@ -9,16 +11,17 @@ import { HARDWARE } from 'src/app/mock-data/hardware';
 })
 export class HardwareDetailComponent implements OnInit {
 
-  public selectedHardware: string = '';
+  public selectedHardware: HardwareComponent;
 
   constructor(
     private route: ActivatedRoute,
+    private _hardwareComponents: HardwareComponentsService
   ) {
   }
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.selectedHardware = HARDWARE[id];
+    const id: string = this.route.snapshot.paramMap.get('id');
+    this.selectedHardware = this._hardwareComponents.getComponentById(id);
   }
 
 }

@@ -1,0 +1,12 @@
+<div class="card" routerLink="/hardware/{{component.id}}">
+    <div class="card__data">
+        <h3>{{component.title}}</h3>
+        <p>Model: {{component.model}}</p>
+        <p>Brand: {{component.brand}}</p>
+        <p>Price: <b>{{component.price}}</b> USD</p>
+    </div>
+
+    <div class="card__img-container">
+      <img [src]="component.img" alt="" class="card__img">
+    </div>
+</div>

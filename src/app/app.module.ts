@@ -17,6 +17,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { ComponentCardComponent } from './modules/component-card/component-card.component';
 
 registerLocaleData(en);
 
@@ -25,6 +26,7 @@ registerLocaleData(en);
     AppComponent,
     HardwareDetailComponent,
     HomeComponent,
+    ComponentCardComponent,
   ],
   imports: [
     BrowserModule,

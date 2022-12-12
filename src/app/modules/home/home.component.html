@@ -21,7 +21,8 @@
     <nz-layout>
       <nz-sider nzWidth="275px">
         <ul nz-menu nzMode="inline" class="sider-menu">
-          <li nz-submenu nzOpen nzIcon="user" nzTitle="subnav 1">
+          <li nz-menu-item nzSelected>Power Supply</li>
+          <!-- <li nz-submenu nzOpen nzIcon="user" nzTitle="subnav 1">
             <ul>
               <li nz-menu-item nzSelected>option1</li>
               <li nz-menu-item>option2</li>
@@ -44,7 +45,7 @@
               <li nz-menu-item>option11</li>
               <li nz-menu-item>option12</li>
             </ul>
-          </li>
+          </li> -->
         </ul>
       </nz-sider>
 
@@ -57,8 +58,10 @@
         </nz-breadcrumb>
         <nz-content>
             <h1>Content</h1>
-            <ng-container *ngFor="let item of hardware; let i = index">
-                <p><a routerLink="/hardware/{{i}}">item: {{item}}</a></p>
+            <ng-container *ngFor="let item of hardware[0]; let i = index">
+                <!-- <p><a routerLink="/hardware/{{i}}">{{item.title}}</a></p> -->
+
+                <app-component-card [component]="item"></app-component-card>
             </ng-container>
         </nz-content>
       </nz-layout>

@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  X_RAPID_API_KEY: '11ff87a06emshe34071c564f77fdp104cbcjsncd878d29d813',
+  X_RAPID_API_HOST: 'computer-components-api.p.rapidapi.com',
+  RAPID_API_URL:  'https://computer-components-api.p.rapidapi.com'
 };
 
 /*

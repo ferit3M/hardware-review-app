@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HardwareComponent } from 'src/app/interfaces/hardware-component';
 import { HARDWARE } from 'src/app/mock-data/hardware';
+import { HardwareComponentsService } from 'src/app/services/hardware-components.service';
 
 @Component({
   selector: 'app-home',
@@ -8,15 +10,16 @@ import { HARDWARE } from 'src/app/mock-data/hardware';
 })
 export class HomeComponent implements OnInit {
 
-  public hardware: string[] = HARDWARE;
+  public hardware: Array<HardwareComponent[]>;
+
+  constructor(private _hardwareComponents: HardwareComponentsService) {
+  }
 
   ngOnInit(): void {
-    console.log(HARDWARE);
 
-    for (let i = 0; i < HARDWARE.length; i++) {
-      console.log(HARDWARE[i]);
-
-    }
+    this._hardwareComponents.hardware.subscribe((res: Array<HardwareComponent[]>) => {
+      this.hardware = res;
+    });
 
   }
 
