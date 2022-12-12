@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { HardwareCategory } from '../interfaces/hardware-category';
 import { HardwareComponent } from '../interfaces/hardware-component';
 
 @Injectable({
@@ -13,7 +14,11 @@ export class HardwareComponentsService {
     'powerSupply', 'case_fan', 'ram', 'mouse', 'keyboard', 'cpu_fan', 'case', 'storage', 'processor', 'gpu', 'motherboard'
   ];
 
-  public hardware: BehaviorSubject<Array<HardwareComponent[]>> = new BehaviorSubject([]);
+  private hardwareCategories: string[] = [
+    'Power Supply', 'Case Fan', 'RAM', 'Mouse', 'Keyboard', 'Cpu Fan', 'Case', 'Storage', 'Processor', 'GPU', 'Motherboard'
+  ];
+
+  public allHardware: BehaviorSubject<HardwareCategory[]> = new BehaviorSubject([]);
 
   private options = {
     method: 'GET',
@@ -26,27 +31,31 @@ export class HardwareComponentsService {
   constructor(
     private http: HttpClient
   ) {
-    console.log('HardwareComponentsService CREATED');
-    for (let i = 0; i < 1; i++) {
-      this.getComponents(this.endpoints[i], 5, 0);
+    this.getComponents();
+  }
+
+  private getComponents() {
+    for (let i = 0; i < this.endpoints.length; i++) {
+      this.getComponentsByCategory(this.endpoints[i], 5, 0).subscribe((hardwareComponents: HardwareComponent[]) => {
+        const hardwareCategory = {
+          endpoint: this.endpoints[i],
+          category: this.hardwareCategories[i],
+          components: hardwareComponents
+        }
+        this.allHardware.value.push(hardwareCategory);
+      });
     }
   }
 
-  private getComponents(endpoint: string, limit: number, offset: number) {
-    this.http.get(`${environment.RAPID_API_URL}/${endpoint}?limit=${limit}&offset=${offset}`, this.options)
-    .subscribe((res: HardwareComponent[]) => {
-      console.log(res);
-      this.hardware.next([...this.hardware.value, res]);
-    },
-      err => console.log(err)
-    );
+  private getComponentsByCategory(endpoint: string, limit: number, offset: number): Observable<HardwareComponent[]> {
+    return this.http.get<HardwareComponent[]>(`${environment.RAPID_API_URL}/${endpoint}?limit=${limit}&offset=${offset}`, this.options);
   }
 
   public getComponentById(id: string): HardwareComponent {
-    for (let i = 0; i < this.hardware.getValue().length; i++) {
-      for (let j = 0; j < this.hardware.getValue()[i].length; j++) {
-        if (this.hardware.getValue()[i][j].id === id)
-          return this.hardware.value[i][j];
+    for (let i = 0; i < this.allHardware.getValue().length; i++) {
+      for (let j = 0; j < this.allHardware.getValue()[i].components.length; j++) {
+        if (this.allHardware.getValue()[i].components[j].id === id)
+          return this.allHardware.getValue()[i].components[j];
       }
     }
     return null;

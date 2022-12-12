@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HardwareComponent } from 'src/app/interfaces/hardware-component';
-import { HARDWARE } from 'src/app/mock-data/hardware';
+import { HardwareCategory } from 'src/app/interfaces/hardware-category';
 import { HardwareComponentsService } from 'src/app/services/hardware-components.service';
 
 @Component({
@@ -10,17 +9,20 @@ import { HardwareComponentsService } from 'src/app/services/hardware-components.
 })
 export class HomeComponent implements OnInit {
 
-  public hardware: Array<HardwareComponent[]>;
+  public selectedHardwareCategoryIndex: number = -1;
+
+  public allHardware: HardwareCategory[];
 
   constructor(private _hardwareComponents: HardwareComponentsService) {
   }
 
   ngOnInit(): void {
-
-    this._hardwareComponents.hardware.subscribe((res: Array<HardwareComponent[]>) => {
-      this.hardware = res;
-    });
-
+    this._hardwareComponents.allHardware.subscribe((res: HardwareCategory[]) => {
+      this.allHardware = res;
+    })
   }
 
+  public selectHardwareCategory(index: number) {
+    this.selectedHardwareCategoryIndex = index;
+  }
 }
