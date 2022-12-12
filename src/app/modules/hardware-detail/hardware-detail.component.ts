@@ -12,6 +12,9 @@ import { HardwareComponentsService } from 'src/app/services/hardware-components.
 export class HardwareDetailComponent implements OnInit {
 
   public selectedHardware: HardwareComponent;
+  public componentRate: number = 2.5
+  public userReview: String
+  public isAddReview: boolean = false
 
   constructor(
     private route: ActivatedRoute,
@@ -22,6 +25,20 @@ export class HardwareDetailComponent implements OnInit {
   ngOnInit(): void {
     const id: string = this.route.snapshot.paramMap.get('id');
     this.selectedHardware = this._hardwareComponents.getComponentById(id);
+  }
+
+  rateChange(){
+    console.log(this.componentRate)
+  }
+  
+  addReview(){
+    this.isAddReview = true
+    console.log(this.isAddReview)
+  }
+  
+  submitReview(){
+    this.isAddReview = false
+    console.log(this.userReview)
   }
 
 }

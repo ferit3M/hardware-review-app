@@ -18,6 +18,11 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { ComponentCardComponent } from './modules/component-card/component-card.component';
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 registerLocaleData(en);
 
@@ -37,7 +42,12 @@ registerLocaleData(en);
     NzLayoutModule,
     NzButtonModule,
     NzMenuModule,
-    NzBreadCrumbModule
+    NzBreadCrumbModule,
+    NzRateModule,
+    NzDividerModule,
+    NzCommentModule,
+    NzListModule,
+    NzInputModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }
