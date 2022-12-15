@@ -31,6 +31,9 @@ nz-header div button {
 
 .inner-layout {
     padding: 0 24px 24px;
+
+    margin-right: 150px;
+    margin-left: 150px;
 }
 
 nz-breadcrumb {
@@ -67,4 +70,28 @@ button{
 
 .reviews{
     margin-top: 100px;
+}
+
+.home__header-buttons {
+    margin-left: 15px;
+}
+
+@media only screen and (max-width: 992px) {
+    .inner-layout {
+        margin-right: 60px;
+        margin-left: 60px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .inner-layout {
+        margin-right: 0px;
+        margin-left: 0px;
+        padding: 0px 5px 5px 0;
+    }
+
+    .home__header-buttons-wrapper {
+        display: flex;
+        align-items: center;
+    }
 }

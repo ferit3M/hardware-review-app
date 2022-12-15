@@ -25,6 +25,8 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { ModalLoginComponent } from './modules/modal-login/modal-login.component';
 import { ModalRegistrationComponent } from './modules/modal-registration/modal-registration.component';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 registerLocaleData(en);
 
@@ -51,7 +53,10 @@ registerLocaleData(en);
     NzDividerModule,
     NzCommentModule,
     NzListModule,
-    NzInputModule
+    NzInputModule,
+    NzModalModule,
+    ReactiveFormsModule,
+    NzFormModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

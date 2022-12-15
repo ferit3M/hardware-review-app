@@ -10,12 +10,6 @@ const routes: Routes = [
         path: '',
         component: HomeComponent
     },
-    /* {
-        path: '',
-        component: HomeComponent,
-        loadChildren: () =>
-            import('./modules/home/home.module').then((m) => m.HomeModule),
-    } */
     { path: 'hardware/:id', component: HardwareDetailComponent },
 ];
 

@@ -7,11 +7,6 @@ import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@an
 })
 export class ModalRegistrationComponent implements OnInit {
 
-  /* username: string;
-  email: string;
-  password: string;
-  confirmPassword: string; */
-
   validateForm!: FormGroup;
 
   isVisible = false;

@@ -46,3 +46,10 @@ nz-content {
 nz-sider ul {
     background: #D2D1D1;
 }
+
+@media only screen and (max-width: 600px) {
+    .home__header-buttons-wrapper {
+        display: flex;
+        align-items: center;
+    }
+}

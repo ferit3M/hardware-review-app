@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HardwareCategory } from '../interfaces/hardware-category';
 import { HardwareComponent } from '../interfaces/hardware-component';
@@ -51,13 +51,41 @@ export class HardwareComponentsService {
     return this.http.get<HardwareComponent[]>(`${environment.RAPID_API_URL}/${endpoint}?limit=${limit}&offset=${offset}`, this.options);
   }
 
-  public getComponentById(id: string): HardwareComponent {
-    for (let i = 0; i < this.allHardware.getValue().length; i++) {
+  public getComponentById(id: string): Observable<HardwareComponent> {//HardwareComponent {
+
+    return this.allHardware.pipe(
+      map((res: HardwareCategory[]) => {
+
+        console.log('map');
+        console.log(res);
+
+
+        for (let i = 0; i < res.length; i++) {
+          for (let j = 0; j < res[i].components.length; j++) {
+            if (res[i].components[j].id === id)
+              return res[i].components[j];
+          }
+        }
+        return null;
+      })
+    )
+
+    /* return this.allHardware.subscribe((res: HardwareCategory[]) => {
+      for (let i = 0; i < this.allHardware.getValue().length; i++) {
+        for (let j = 0; j < this.allHardware.getValue()[i].components.length; j++) {
+          if (this.allHardware.getValue()[i].components[j].id === id)
+            return this.allHardware.getValue()[i].components[j];
+        }
+      }
+      return null;
+    }) */
+
+    /* for (let i = 0; i < this.allHardware.getValue().length; i++) {
       for (let j = 0; j < this.allHardware.getValue()[i].components.length; j++) {
         if (this.allHardware.getValue()[i].components[j].id === id)
           return this.allHardware.getValue()[i].components[j];
       }
     }
-    return null;
+    return null; */
   }
 }

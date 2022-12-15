@@ -4,7 +4,7 @@
     <nz-header>
         <!-- <div class="logo"></div> -->
         <h2>Hardware review</h2>
-        <div>
+        <div class="home__header-buttons-wrapper">
             <app-modal-registration class="home__header-buttons"></app-modal-registration>
             <app-modal-login class="home__header-buttons"></app-modal-login>
         </div>
@@ -33,9 +33,9 @@
 
             <ng-container *ngIf="selectedHardwareCategoryIndex === -1">
               <h1>All</h1>
-              <ng-container *ngFor="let items of allHardware">
+              <ng-container *ngFor="let items of allHardware; let i = index">
                 <ng-container *ngFor="let item of items.components">
-                  <app-component-card [component]="item"></app-component-card>
+                  <app-component-card [component]="item" [category]="allHardware[i]?.category"></app-component-card>
                 </ng-container>
               </ng-container>
             </ng-container>
@@ -43,7 +43,7 @@
             <ng-container>
               <h1>{{allHardware[selectedHardwareCategoryIndex]?.category}}</h1>
               <ng-container *ngFor="let item of allHardware[selectedHardwareCategoryIndex]?.components">
-                  <app-component-card [component]="item"></app-component-card>
+                  <app-component-card [component]="item" [category]="allHardware[selectedHardwareCategoryIndex]?.category"></app-component-card>
               </ng-container>
             </ng-container>
         </nz-content>
