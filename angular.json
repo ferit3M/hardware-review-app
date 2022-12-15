@@ -127,5 +127,8 @@
       "style": "scss"
     }
   },
-  "defaultProject": "hardware-review-app"
+  "defaultProject": "hardware-review-app",
+  "cli": {
+    "analytics": false
+  }
 }
