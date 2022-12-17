@@ -1,4 +1,4 @@
-<nz-layout class="home">
+<nz-layout class="home" [ngClass]="{'waiting-cursor' : dataArrived === false}">
 
     <!-- Header -->
     <nz-header>
@@ -27,24 +27,13 @@
       <nz-layout class="inner-layout">
         <nz-breadcrumb>
           <nz-breadcrumb-item><a (click)="selectHardwareCategory(-1)">Components</a></nz-breadcrumb-item>
-          <nz-breadcrumb-item>{{allHardware[selectedHardwareCategoryIndex]?.category}}</nz-breadcrumb-item>
+          <nz-breadcrumb-item>{{selectedHardwareCategory?.category}}</nz-breadcrumb-item>
         </nz-breadcrumb>
         <nz-content>
 
-            <ng-container *ngIf="selectedHardwareCategoryIndex === -1">
-              <h1>All</h1>
-              <ng-container *ngFor="let items of allHardware; let i = index">
-                <ng-container *ngFor="let item of items.components">
-                  <app-component-card [component]="item" [category]="allHardware[i]?.category"></app-component-card>
-                </ng-container>
-              </ng-container>
-            </ng-container>
-
-            <ng-container>
-              <h1>{{allHardware[selectedHardwareCategoryIndex]?.category}}</h1>
-              <ng-container *ngFor="let item of allHardware[selectedHardwareCategoryIndex]?.components">
-                  <app-component-card [component]="item" [category]="allHardware[selectedHardwareCategoryIndex]?.category"></app-component-card>
-              </ng-container>
+            <h1>{{selectedHardwareCategory?.category}}</h1>
+            <ng-container *ngFor="let item of selectedHardwareCategory.components">
+              <app-component-card [component]="item" [category]="selectedHardwareCategory?.category"></app-component-card>
             </ng-container>
         </nz-content>
       </nz-layout>

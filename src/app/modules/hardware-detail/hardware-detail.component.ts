@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HardwareComponent } from 'src/app/interfaces/hardware-component';
 import { HardwareComponentsService } from 'src/app/services/hardware-components.service';
@@ -8,7 +8,7 @@ import { HardwareComponentsService } from 'src/app/services/hardware-components.
   templateUrl: './hardware-detail.component.html',
   styleUrls: ['./hardware-detail.component.scss']
 })
-export class HardwareDetailComponent implements OnInit {
+export class HardwareDetailComponent implements OnInit, OnDestroy {
 
   private HARDWARE_CATEGORY_KEY = 'category';
   private HARDWARE_COMPONENT_KEY = 'component';
@@ -17,30 +17,39 @@ export class HardwareDetailComponent implements OnInit {
   public componentRate: number = 2.5
   public userReview: String
   public isAddReview: boolean = false
+
   public category: string;
+  private componentId: string;
 
   constructor(
-    private route: ActivatedRoute,
+    @Inject(ActivatedRoute) private route: ActivatedRoute,
     private _hardwareComponents: HardwareComponentsService
   ) {
   }
 
+  ngOnDestroy(): void {
+    localStorage.removeItem(this.HARDWARE_CATEGORY_KEY);
+    localStorage.removeItem(this.HARDWARE_COMPONENT_KEY);
+  }
+
   ngOnInit(): void {
-    console.log("ngOnInit")
+    this.componentId = this.route.snapshot.paramMap.get('id');
     this.category = localStorage.getItem(this.HARDWARE_CATEGORY_KEY);
-    const id: string = this.route.snapshot.paramMap.get('id');
-    console.log(id);
 
-    //this.loadSelectedComponentFromLocalStorage();
-    //this.selectedHardware = this._hardwareComponents.getComponentById(id);
+    if (this.category == null)
+      this._hardwareComponents.getComponentById(this.componentId).subscribe((res: HardwareComponent)=> {
+        this.selectedHardware = res;
+        this.saveToLocalStorage();
+      });
+    else
+    {
+      this.loadSelectedComponentFromLocalStorage();
+    }
+  }
 
-    this._hardwareComponents.getComponentById(id).subscribe((res: HardwareComponent)=> {
-      console.log('rez');
-      console.log(res);
-
-
-      this.selectedHardware = res;
-    })
+  private saveToLocalStorage() {
+    localStorage.setItem(this.HARDWARE_CATEGORY_KEY, this.category);
+    localStorage.setItem(this.HARDWARE_COMPONENT_KEY, JSON.stringify(this.selectedHardware));
   }
 
   rateChange(){
@@ -57,8 +66,12 @@ export class HardwareDetailComponent implements OnInit {
     console.log(this.userReview)
   }
 
-  private  loadSelectedComponentFromLocalStorage() {
-    this.selectedHardware = JSON.parse(localStorage.getItem(this.HARDWARE_COMPONENT_KEY)) as HardwareComponent;
+  private loadSelectedComponentFromLocalStorage() {
+    const temp: HardwareComponent = JSON.parse(localStorage.getItem(this.HARDWARE_COMPONENT_KEY)) as HardwareComponent;
+    console.log(temp);
+
+    if (temp != null)
+      this.selectedHardware = temp;
     console.log(this.selectedHardware);
 
   }

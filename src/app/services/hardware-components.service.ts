@@ -18,7 +18,7 @@ export class HardwareComponentsService {
     'Power Supply', 'Case Fan', 'RAM', 'Mouse', 'Keyboard', 'Cpu Fan', 'Case', 'Storage', 'Processor', 'GPU', 'Motherboard'
   ];
 
-  public allHardware: BehaviorSubject<HardwareCategory[]> = new BehaviorSubject([]);
+  public allHardware: BehaviorSubject<HardwareCategory[]> = new BehaviorSubject<HardwareCategory[]>([]);
 
   private options = {
     method: 'GET',
@@ -34,32 +34,29 @@ export class HardwareComponentsService {
     this.getComponents();
   }
 
-  private getComponents() {
+  private async getComponents() {
+    let tempAllHardware: HardwareCategory[] = [];
     for (let i = 0; i < this.endpoints.length; i++) {
-      this.getComponentsByCategory(this.endpoints[i], 5, 0).subscribe((hardwareComponents: HardwareComponent[]) => {
-        const hardwareCategory = {
+      await this.getComponentsByCategory(this.endpoints[i], 5, 0).then((hardwareComponents: HardwareComponent[]) => {
+        const tempHardwareCategory = {
           endpoint: this.endpoints[i],
           category: this.hardwareCategories[i],
           components: hardwareComponents
         }
-        this.allHardware.value.push(hardwareCategory);
-      });
+        tempAllHardware.push(tempHardwareCategory)
+      }, err => console.log(err) );
     }
+    this.allHardware.next(tempAllHardware);
   }
 
-  private getComponentsByCategory(endpoint: string, limit: number, offset: number): Observable<HardwareComponent[]> {
-    return this.http.get<HardwareComponent[]>(`${environment.RAPID_API_URL}/${endpoint}?limit=${limit}&offset=${offset}`, this.options);
+  private async getComponentsByCategory(endpoint: string, limit: number, offset: number): Promise<HardwareComponent[]> {
+    return await this.http.get<HardwareComponent[]>(`${environment.RAPID_API_URL}/${endpoint}?limit=${limit}&offset=${offset}`, this.options)
+    .toPromise();
   }
 
-  public getComponentById(id: string): Observable<HardwareComponent> {//HardwareComponent {
-
+  public getComponentById(id: string): Observable<HardwareComponent> {
     return this.allHardware.pipe(
       map((res: HardwareCategory[]) => {
-
-        console.log('map');
-        console.log(res);
-
-
         for (let i = 0; i < res.length; i++) {
           for (let j = 0; j < res[i].components.length; j++) {
             if (res[i].components[j].id === id)
@@ -69,23 +66,5 @@ export class HardwareComponentsService {
         return null;
       })
     )
-
-    /* return this.allHardware.subscribe((res: HardwareCategory[]) => {
-      for (let i = 0; i < this.allHardware.getValue().length; i++) {
-        for (let j = 0; j < this.allHardware.getValue()[i].components.length; j++) {
-          if (this.allHardware.getValue()[i].components[j].id === id)
-            return this.allHardware.getValue()[i].components[j];
-        }
-      }
-      return null;
-    }) */
-
-    /* for (let i = 0; i < this.allHardware.getValue().length; i++) {
-      for (let j = 0; j < this.allHardware.getValue()[i].components.length; j++) {
-        if (this.allHardware.getValue()[i].components[j].id === id)
-          return this.allHardware.getValue()[i].components[j];
-      }
-    }
-    return null; */
   }
 }
