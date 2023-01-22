@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  public selectedHardwareCategoryIndex: number = -1;
+  public selectedHardwareCategoryIndex: number = 0; // -1
 
   public allHardware: HardwareCategory[];
 
@@ -25,6 +25,8 @@ export class HomeComponent implements OnInit {
     endpoint: '',
     components: []
   };
+
+  visible: boolean = false;
 
   constructor(
     private _hardwareComponents: HardwareComponentsService,

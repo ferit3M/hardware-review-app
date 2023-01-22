@@ -27,6 +27,12 @@ import { ModalLoginComponent } from './modules/modal-login/modal-login.component
 import { ModalRegistrationComponent } from './modules/modal-registration/modal-registration.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { IconDefinition } from '@ant-design/icons-angular';
+import { MenuOutline } from '@ant-design/icons-angular/icons';
+
+const icons: IconDefinition[] = [ MenuOutline ];
 
 registerLocaleData(en);
 
@@ -56,7 +62,9 @@ registerLocaleData(en);
     NzInputModule,
     NzModalModule,
     ReactiveFormsModule,
-    NzFormModule
+    NzFormModule,
+    NzDrawerModule,
+    NzIconModule.forRoot(icons)
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }
