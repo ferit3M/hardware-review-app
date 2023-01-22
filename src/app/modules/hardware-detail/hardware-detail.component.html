@@ -27,8 +27,8 @@
             <h2>Amazon link: <a href="{{selectedHardware?.link}}">{{selectedHardware?.link}}</a></h2>
             <h2>{{selectedHardware?.price}}$</h2>
 
-            <nz-rate [(ngModel)]="componentRate" (ngModelChange)="rateChange()" nzAllowHalf></nz-rate>
-            <button *ngIf="isAddReview == false" nz-button nzType="primary" (click)="addReview()">Leave review</button>
+            <nz-rate [(ngModel)]="componentRate" (ngModelChange)="rateChange()" *ngIf="loggedIn == true" nzAllowHalf></nz-rate>
+            <button *ngIf="isAddReview == false && loggedIn == true" nz-button nzType="primary" (click)="addReview()">Leave review</button>
 
             <div class="reviewAdd" *ngIf="isAddReview == true">
                 <textarea style="margin-bottom: 15px;" rows="4" nz-input [(ngModel)]="userReview" ></textarea>
@@ -39,17 +39,10 @@
             <hr>
 
             <h1>Reviews:</h1>
-            <nz-list [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
-                <ng-template #item let-item>
-                  <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.datetime">
-                    <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
-                    <nz-comment-content>
-                      <p>{{ item.content }}</p>
-                    </nz-comment-content>
-                    <nz-comment-action>Reply to</nz-comment-action>
-                  </nz-comment>
-                </ng-template>
-              </nz-list>
+            <div *ngFor="let review of componentReviews">
+                <p>{{review.user}}: {{review.review}}</p>
+                <p>{{review.star}}, date: {{review.createdAt}}</p>
+            </div>
             </div>
 
         </nz-content>

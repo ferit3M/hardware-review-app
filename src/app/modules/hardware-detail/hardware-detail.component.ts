@@ -2,6 +2,9 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HardwareComponent } from 'src/app/interfaces/hardware-component';
 import { HardwareComponentsService } from 'src/app/services/hardware-components/hardware-components.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { ReviewService } from 'src/app/services/review/review.service';
+import { getReview, Review } from 'src/app/interfaces/review';
 
 @Component({
   selector: 'app-hardware-detail',
@@ -15,16 +18,22 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
 
   public selectedHardware: HardwareComponent;
   public componentRate: number = 2.5
-  public userReview: String
+  public userReview: string
   public isAddReview: boolean = false
 
   public category: string;
   private componentId: string;
+  public componentReviews: getReview[] = [];
+
+  public loggedIn: boolean;
 
   constructor(
     @Inject(ActivatedRoute) private route: ActivatedRoute,
-    private _hardwareComponents: HardwareComponentsService
+    private _hardwareComponents: HardwareComponentsService,
+    private userService: UserService,
+    private reviewService: ReviewService
   ) {
+    userService.loggedin.subscribe((result: boolean) => (this.loggedIn = result));
   }
 
   ngOnDestroy(): void {
@@ -35,6 +44,7 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.componentId = this.route.snapshot.paramMap.get('id');
     this.category = localStorage.getItem(this.HARDWARE_CATEGORY_KEY);
+    this.getReviews();
 
     if (this.category == null)
       this._hardwareComponents.getComponentById(this.componentId).subscribe((res: HardwareComponent)=> {
@@ -62,8 +72,19 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   }
 
   submitReview(){
+    const review: Review = {
+      userId: 1,
+      componentId: this.componentId,
+      review: this.userReview,
+      star: this.componentRate
+    }
+    console.log(review)
+    this.reviewService.addReview(review)
     this.isAddReview = false
-    console.log(this.userReview)
+  }
+
+  getReviews(){
+      this.reviewService.getComponentReview(this.componentId).subscribe((result: getReview[]) => (this.componentReviews = result));
   }
 
   private loadSelectedComponentFromLocalStorage() {
