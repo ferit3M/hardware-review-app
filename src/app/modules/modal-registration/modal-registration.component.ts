@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-modal-registration',
@@ -12,12 +13,13 @@ export class ModalRegistrationComponent implements OnInit {
   isVisible = false;
 
   constructor(
-    private fb: UntypedFormBuilder
+    private fb: UntypedFormBuilder,
+    private _user: UserService,
   ) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      username: [null, [Validators.required]],
+      name: [null, [Validators.required]],
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]],
       confirmPassword: [null, [Validators.required]],
@@ -29,12 +31,18 @@ export class ModalRegistrationComponent implements OnInit {
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
-    this.isVisible = false;
+    if (this.validateForm.valid) {
+      this._user.register(this.validateForm.value).then((res: boolean) => {
+        if (true)
+          this.isVisible = false;
+      });
+    }
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
+    this.validateForm.controls.name.setValue('');
+    this.validateForm.controls.email.setValue('');
+    this.validateForm.controls.password.setValue('');
   }
 }

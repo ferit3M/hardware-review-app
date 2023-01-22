@@ -1,12 +1,20 @@
 <div class="card" routerLink="/hardware/{{component.id}}">
-    <div class="card__data">
-        <h3>{{component.title}}</h3>
-        <p>Brand: {{component.brand}}</p>
-        <p>Model: {{component.model}}</p>
-        <p>Price: <b>{{component.price}}</b> USD</p>
+
+    <div class="card__data" style="box-sizing: border-box;">
+
+        <div style="margin: 25px">
+          <h3>{{component.title}}</h3>
+          <p>Brand: {{component.brand}}</p>
+          <p>Model: {{component.model}}</p>
+          <p>Price: <b>{{component.price}}</b> USD</p>
+        </div>
+        <div class="card__img-container">
+          <!-- <div class="card__img-container" >
+            <img [src]="component.img" alt="" class="card__img">
+          </div> -->
+          <div [ngStyle]="{'background-image': imageURL()}" class="card__img"></div>
+        </div>
+
     </div>
 
-    <div class="card__img-container">
-      <img [src]="component.img" alt="" class="card__img">
-    </div>
 </div>

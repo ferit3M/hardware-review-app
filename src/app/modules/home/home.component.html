@@ -2,17 +2,20 @@
 
     <!-- Header -->
     <nz-header>
-        <!-- <div class="logo"></div> -->
-        <h2>Hardware review</h2>
-        <div class="home__header-buttons-wrapper">
+        <h2 class="page-title" (click)="goToHomePage()">Hardware review</h2>
+        <div class="home__header-buttons-wrapper" *ngIf="!loggedin">
             <app-modal-registration class="home__header-buttons"></app-modal-registration>
             <app-modal-login class="home__header-buttons"></app-modal-login>
+        </div>
+        <div class="home__welcome" *ngIf="loggedin">
+          <h2>Welcome</h2>
+          <button nz-button [nzType]="'default'" (click)="logout()"><span>Logout</span></button>
         </div>
     </nz-header>
 
     <!-- Sider -->
     <nz-layout>
-      <nz-sider nzWidth="275px">
+      <!-- <nz-sider nzWidth="275px">
         <ul nz-menu nzMode="inline" class="sider-menu">
 
           <li nz-menu-item (click)="selectHardwareCategory(-1)" [nzSelected]="selectedHardwareCategoryIndex === -1">All</li>
@@ -21,7 +24,7 @@
             <li nz-menu-item (click)="selectHardwareCategory(i)" [nzSelected]="i === selectedHardwareCategoryIndex">{{item?.category}}</li>
           </ng-container>
         </ul>
-      </nz-sider>
+      </nz-sider> -->
 
       <!-- Main content -->
       <nz-layout class="inner-layout">
@@ -29,13 +32,17 @@
           <nz-breadcrumb-item><a (click)="selectHardwareCategory(-1)">Components</a></nz-breadcrumb-item>
           <nz-breadcrumb-item>{{selectedHardwareCategory?.category}}</nz-breadcrumb-item>
         </nz-breadcrumb>
+
         <nz-content>
+          <div>
 
             <h1>{{selectedHardwareCategory?.category}}</h1>
             <ng-container *ngFor="let item of selectedHardwareCategory.components">
               <app-component-card [component]="item" [category]="selectedHardwareCategory?.category"></app-component-card>
             </ng-container>
+          </div>
         </nz-content>
+
       </nz-layout>
     </nz-layout>
 

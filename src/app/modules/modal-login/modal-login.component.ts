@@ -22,13 +22,10 @@ export class ModalLoginComponent {
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     const user: UserLogin = {
       email: this.email,
       password: this.password
     }
-    console.log(user);
-
     this._user.login(user).then((res:boolean) => {
       if (res)
         this.isVisible = false;
@@ -36,7 +33,8 @@ export class ModalLoginComponent {
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
+    this.email = '';
+    this.password = '';
   }
 }

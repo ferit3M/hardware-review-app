@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Auth, UserLogin } from 'src/app/interfaces/user';
@@ -41,8 +41,8 @@ export class UserService {
     }).catch(err => {return false});
   }
 
-  register(body: UserLogin) {
-    this.http.post(`${this.API_URL}/api/auth/signup`, body).toPromise().then((res: Auth) => {
+  register(body: UserLogin): Promise<boolean> {
+    return this.http.post(`${this.API_URL}/api/auth/signup`, body).toPromise().then((res: Auth) => {
       console.log(res);
 
       if (res.access_token) {
@@ -55,5 +55,14 @@ export class UserService {
   logout() {
     this.loggedin.next(false);
     localStorage.removeItem(this.ACCESS_TOKEN_STORAGE_KEY);
+  }
+
+  getAuthorizedOptions() {
+    const options = {
+      headers: new HttpHeaders({
+        "Authorization": `Bearer ${this.access_token}`
+      })
+    };
+    return options;
   }
 }

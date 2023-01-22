@@ -6,6 +6,13 @@ nz-header {
     display: flex;
     justify-content: space-between;
     background: #E1E1E1;
+    align-items: center;
+
+    .page-title {
+      @media only screen and (max-width: 600px) {
+        display: none;
+      }
+    }
 }
 
 .home__header-buttons {
@@ -43,6 +50,13 @@ nz-content {
     min-height: 280px;
 }
 
+nz-sider {
+
+  @media only screen and (max-width: 992px)  {
+    display: none;
+  }
+}
+
 nz-sider ul {
     background: #D2D1D1;
 }
@@ -51,9 +65,22 @@ nz-sider ul {
     .home__header-buttons-wrapper {
         display: flex;
         align-items: center;
+        width: 100%;
+        justify-content: flex-end;
     }
 }
 
 .waiting-cursor {
   cursor: progress !important;
+}
+
+.home__welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  button {
+    margin-left: 20px;
+  }
 }

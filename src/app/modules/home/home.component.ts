@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { HardwareCategory } from 'src/app/interfaces/hardware-category';
 import { HardwareComponent } from 'src/app/interfaces/hardware-component';
 import { HardwareComponentsService } from 'src/app/services/hardware-components/hardware-components.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +18,8 @@ export class HomeComponent implements OnInit {
 
   public dataArrived: boolean = false;
 
+  loggedin: boolean;
+
   public selectedHardwareCategory: HardwareCategory = {
     category: 'All',
     endpoint: '',
@@ -24,10 +28,16 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private _hardwareComponents: HardwareComponentsService,
+    private _router: Router,
+    private _user: UserService,
     ) {
   }
 
   ngOnInit(): void {
+    this._user.loggedin.subscribe((res: boolean) => {
+      this.loggedin = res;
+    });
+
     this._hardwareComponents.allHardware.subscribe((res: HardwareCategory[]) => {
       this.allHardware = res;
       this.addComponentsToCategoryAll();
@@ -63,5 +73,12 @@ export class HomeComponent implements OnInit {
     }
     tempHardware.components = tempComponents;
     this.selectedHardwareCategory = tempHardware;
+  }
+
+  logout() {
+    this._user.logout();
+  }
+
+  goToHomePage() {
   }
 }
