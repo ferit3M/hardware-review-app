@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HardwareCategory } from 'src/app/interfaces/hardware-category';
 import { HardwareComponent } from 'src/app/interfaces/hardware-component';
-import { HardwareComponentsService } from 'src/app/services/hardware-components.service';
+import { HardwareComponentsService } from 'src/app/services/hardware-components/hardware-components.service';
 
 @Component({
   selector: 'app-home',

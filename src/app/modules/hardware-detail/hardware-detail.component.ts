@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HardwareComponent } from 'src/app/interfaces/hardware-component';
-import { HardwareComponentsService } from 'src/app/services/hardware-components.service';
+import { HardwareComponentsService } from 'src/app/services/hardware-components/hardware-components.service';
 
 @Component({
   selector: 'app-hardware-detail',

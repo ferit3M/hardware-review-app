@@ -2,8 +2,8 @@
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Login</span></button>
     <nz-modal [(nzVisible)]="isVisible" nzTitle="Login" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <ng-container *nzModalContent>
-        <p>Username</p>
-        <input nz-input placeholder="Username" [(ngModel)]="username" />
+        <p>E-Mail</p>
+        <input nz-input placeholder="E-Mail" [(ngModel)]="email" />
         <br />
         <br />
         <p>Password</p>

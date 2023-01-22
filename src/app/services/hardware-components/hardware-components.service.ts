@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HardwareCategory } from '../interfaces/hardware-category';
-import { HardwareComponent } from '../interfaces/hardware-component';
+import { HardwareCategory } from '../../interfaces/hardware-category';
+import { HardwareComponent } from '../../interfaces/hardware-component';
 
 @Injectable({
   providedIn: 'root'

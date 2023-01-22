@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { UserLogin } from 'src/app/interfaces/user';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-modal-login',
@@ -6,12 +8,14 @@ import { Component } from '@angular/core';
 })
 export class ModalLoginComponent {
 
-  username: string;
+  email: string;
   password: string;
 
   isVisible = false;
 
-  constructor() {}
+  constructor(
+    private _user: UserService,
+  ) {}
 
   showModal(): void {
     this.isVisible = true;
@@ -19,7 +23,16 @@ export class ModalLoginComponent {
 
   handleOk(): void {
     console.log('Button ok clicked!');
-    this.isVisible = false;
+    const user: UserLogin = {
+      email: this.email,
+      password: this.password
+    }
+    console.log(user);
+
+    this._user.login(user).then((res:boolean) => {
+      if (res)
+        this.isVisible = false;
+    });
   }
 
   handleCancel(): void {
