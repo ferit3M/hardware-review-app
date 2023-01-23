@@ -31,6 +31,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { MenuOutline } from '@ant-design/icons-angular/icons';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 const icons: IconDefinition[] = [ MenuOutline ];
 
@@ -64,7 +65,8 @@ registerLocaleData(en);
     ReactiveFormsModule,
     NzFormModule,
     NzDrawerModule,
-    NzIconModule.forRoot(icons)
+    NzIconModule.forRoot(icons),
+    NzSpinModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

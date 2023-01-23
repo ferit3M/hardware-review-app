@@ -19,14 +19,6 @@ nz-header {
     margin-left: 15px;
 }
 
-.logo {
-    width: 120px;
-    height: 31px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px 30px 16px 0;
-    float: left;
-}
-
 .header-menu {
     line-height: 64px;
 }
@@ -37,11 +29,28 @@ nz-header {
 }
 
 .inner-layout {
-    padding: 0 24px 24px;
+  padding: 0 24px 24px;
 
-    @media only screen and (max-width: 992px) {
-      padding: 0;
-    }
+  @media only screen and (max-width: 992px) {
+    padding: 0;
+  }
+}
+
+.home__crumbs-and-search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 20px !important;
+
+  .input-group {
+    width: 300px !important;
+    margin-left: 24px !important;
+    margin-right: 24px;
+    margin-bottom: 0 !important;
+    min-width: 200px !important;
+  }
 }
 
 nz-breadcrumb {
@@ -74,10 +83,6 @@ nz-sider ul {
     }
 }
 
-.waiting-cursor {
-  cursor: progress !important;
-}
-
 .home__welcome {
   display: flex;
   align-items: center;
@@ -89,16 +94,28 @@ nz-sider ul {
   }
 }
 
+.home__content {
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    width: 100%;
+      text-align: left;
+  }
+}
+
+.home__content__spin-container {
+
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 .home__cards-container {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-
-
-
-  @media only screen and (max-width: 600px) {
-
-  }
 }
 
 .home__card {

@@ -1,11 +1,11 @@
-<nz-layout class="home" [ngClass]="{'waiting-cursor' : dataArrived === false}">
+<nz-layout class="home">
 
     <!-- Header -->
     <nz-header>
         <button nz-button nzType="default" nzShape="circle" (click)="visible = !visible" style="margin-right: 20px;" class="drawer-btn">
           <span nz-icon nzType="menu"></span>
         </button>
-        <h2 class="page-title" (click)="goToHomePage()">RevWare</h2>
+        <h2 class="page-title">RevWare</h2>
         <div class="home__header-buttons-wrapper" *ngIf="!loggedin">
             <app-modal-registration class="home__header-buttons"></app-modal-registration>
             <app-modal-login class="home__header-buttons"></app-modal-login>
@@ -61,16 +61,28 @@
       <!-- Main content -->
       <nz-layout class="inner-layout">
 
-        <nz-breadcrumb style="margin-left: 20px;">
-          <nz-breadcrumb-item><a (click)="selectHardwareCategory(-1)">Components</a></nz-breadcrumb-item>
-          <nz-breadcrumb-item>{{selectedHardwareCategory?.category}}</nz-breadcrumb-item>
-        </nz-breadcrumb>
+        <div class="home__crumbs-and-search">
+          <nz-breadcrumb style="margin-left: 20px;">
+            <nz-breadcrumb-item><a (click)="selectHardwareCategory(-1)">Components</a></nz-breadcrumb-item>
+            <nz-breadcrumb-item>{{selectedHardwareCategory?.category}}</nz-breadcrumb-item>
+          </nz-breadcrumb>
 
-        <nz-content>
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" class="input-group">
+            <input type="text" nz-input placeholder="Traži" (keyup)="search()" [(ngModel)]="searchTerm" />
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+          </ng-template>
+        </div>
+
+        <nz-content class="home__content">
           <h1>{{selectedHardwareCategory?.category}}</h1>
 
-          <div class="home__cards-container">
+          <div class="home__content__spin-container" *ngIf="!dataArrived">
+            <nz-spin nzSimple [nzSize]="'large'" [nzSpinning]="!dataArrived" style="position: absolute;"></nz-spin>
+          </div>
 
+          <div class="home__cards-container">
             <div *ngFor="let item of selectedHardwareCategory.components" class="home__card">
               <app-component-card [component]="item" [category]="selectedHardwareCategory?.category"></app-component-card>
             </div>

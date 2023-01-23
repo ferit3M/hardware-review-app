@@ -7,7 +7,7 @@ body {
   overflow-x: hidden;
 }
 
-
+/* Drawer */
 .ant-drawer-header {
   background: #E1E1E1;
 }
@@ -24,4 +24,10 @@ body {
   ul {
     background: #D2D1D1 !important;
   }
+}
+
+/* Spin */
+nz-spin {
+  display: inline-block;
+  margin-right: 16px;
 }
