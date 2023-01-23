@@ -5,6 +5,7 @@ import { HardwareComponentsService } from 'src/app/services/hardware-components/
 import { UserService } from 'src/app/services/user/user.service';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { getReview, Review } from 'src/app/interfaces/review';
+import { DatePipe, formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-hardware-detail',
@@ -26,12 +27,14 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   public componentReviews: getReview[] = [];
 
   public loggedIn: boolean;
+  public format = 'dd/MM/yyyy hh:mm';
 
   constructor(
     @Inject(ActivatedRoute) private route: ActivatedRoute,
     private _hardwareComponents: HardwareComponentsService,
     private userService: UserService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private datePipe: DatePipe
   ) {
     userService.loggedin.subscribe((result: boolean) => (this.loggedIn = result));
   }
@@ -79,12 +82,21 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
       star: this.componentRate
     }
     console.log(review)
-    this.reviewService.addReview(review)
+    this.reviewService.addReview(review).then(() => {
+      this.getReviews();
+    })
     this.isAddReview = false
+    
   }
 
   getReviews(){
-      this.reviewService.getComponentReview(this.componentId).subscribe((result: getReview[]) => (this.componentReviews = result));
+      this.reviewService.getComponentReview(this.componentId).subscribe((result: getReview[]) => {
+        this.componentReviews = result
+        this.componentReviews.forEach(review => {
+        let newDate = new Date(review.createdAt);
+        review.createdAt = this.datePipe.transform(newDate, "d/M/yyy H:mm")
+        });
+      });
   }
 
   private loadSelectedComponentFromLocalStorage() {

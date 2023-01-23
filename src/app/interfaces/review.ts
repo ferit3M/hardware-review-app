@@ -10,6 +10,7 @@ export interface Review {
     review: string,
     star: number,
     user: string
+    date: Date
   }
   
   

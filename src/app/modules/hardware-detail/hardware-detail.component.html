@@ -39,9 +39,11 @@
             <hr>
 
             <h1>Reviews:</h1>
+
             <div *ngFor="let review of componentReviews">
-                <p>{{review.user}}: {{review.review}}</p>
-                <p>{{review.star}}, date: {{review.createdAt}}</p>
+                <p><strong>{{review.user.name}}:</strong><br> {{review.review}}</p>
+                <p><strong>Score: </strong><nz-rate [(ngModel)]="review.star"  [disabled]="true"></nz-rate> <br> <strong>Date: </strong>{{review.createdAt}}</p>
+                <br>
             </div>
             </div>
 

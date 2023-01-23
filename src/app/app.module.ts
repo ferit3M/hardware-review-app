@@ -12,7 +12,7 @@ import en from '@angular/common/locales/en';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { DatePipe } from '@angular/common';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -56,10 +56,12 @@ registerLocaleData(en);
     NzInputModule,
     NzModalModule,
     ReactiveFormsModule,
-    NzFormModule
+    NzFormModule,
+    DatePipe
   ],
   providers: [
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })
