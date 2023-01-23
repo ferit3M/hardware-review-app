@@ -29,6 +29,7 @@ export class ModalLoginComponent {
     this._user.login(user).then((res:boolean) => {
       if (res)
         this.isVisible = false;
+        location.reload();
     });
   }
 

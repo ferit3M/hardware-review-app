@@ -33,8 +33,8 @@
             <h2>Amazon link: <a href="{{selectedHardware?.link}}">{{selectedHardware?.link}}</a></h2>
             <h2>{{selectedHardware?.price}}$</h2>
 
-            <nz-rate [(ngModel)]="componentRate" (ngModelChange)="rateChange()" *ngIf="loggedIn == true" nzAllowHalf></nz-rate>
-            <button *ngIf="isAddReview == false && loggedIn == true" nz-button nzType="primary" (click)="addReview()">Leave review</button>
+            <nz-rate [(ngModel)]="componentRate" (ngModelChange)="rateChange()" *ngIf="loggedIn == true && userLeftReview == false" nzAllowHalf></nz-rate>
+            <button *ngIf="isAddReview == false && loggedIn == true && userLeftReview == false" nz-button nzType="primary" (click)="addReview()">Leave review</button>
 
             <div class="reviewAdd" *ngIf="isAddReview == true">
                 <textarea style="margin-bottom: 15px;" rows="4" nz-input [(ngModel)]="userReview" ></textarea>
@@ -47,9 +47,17 @@
               <hr>
 
               <div *ngFor="let review of componentReviews">
+                <div *ngIf="review.user.name == userLoggedIn">
+                  <div style="background-color:rgb(196, 164, 153);">
+                    <p><strong>{{review.user.name}}:</strong><br> {{review.review}}</p>
+                    <p><strong>Score: </strong><nz-rate [(ngModel)]="review.star"  [disabled]="true"></nz-rate> <br> <strong>Date: </strong>{{review.createdAt}}</p>
+                  </div>
+                </div>
+                <div *ngIf="review.user.name != userLoggedIn">
                   <p><strong>{{review.user.name}}:</strong><br> {{review.review}}</p>
                   <p><strong>Score: </strong><nz-rate [(ngModel)]="review.star"  [disabled]="true"></nz-rate> <br> <strong>Date: </strong>{{review.createdAt}}</p>
-                  <hr>
+                </div>
+                <hr>
               </div>
             </div>
 

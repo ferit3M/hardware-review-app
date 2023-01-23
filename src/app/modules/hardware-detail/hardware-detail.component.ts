@@ -29,6 +29,8 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;
   public format = 'dd/MM/yyyy hh:mm';
   visible: boolean = false;
+  userLeftReview: boolean = false;
+  private userLoggedIn: string;
 
   constructor(
     @Inject(ActivatedRoute) private route: ActivatedRoute,
@@ -37,7 +39,6 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
     private reviewService: ReviewService,
     private datePipe: DatePipe
   ) {
-    userService.loggedin.subscribe((result: boolean) => (this.loggedIn = result));
   }
 
   ngOnDestroy(): void {
@@ -46,9 +47,15 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.userService.loggedin.subscribe((result: boolean) => (this.loggedIn = result));
+
     this.componentId = this.route.snapshot.paramMap.get('id');
     this.category = localStorage.getItem(this.HARDWARE_CATEGORY_KEY);
     this.getReviews();
+
+    if(this.loggedIn == true){
+      this.userLoggedIn = this.userService.name.getValue()
+    }
 
     if (this.category == null)
       this._hardwareComponents.getComponentById(this.componentId).subscribe((res: HardwareComponent)=> {
@@ -98,9 +105,18 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   getReviews(){
       this.reviewService.getComponentReview(this.componentId).subscribe((result: getReview[]) => {
         this.componentReviews = result
-        this.componentReviews.forEach(review => {
-        let newDate = new Date(review.createdAt);
-        review.createdAt = this.datePipe.transform(newDate, "d/M/yyy H:mm")
+        this.componentReviews.forEach(_review => {
+          let newDate = new Date(_review.createdAt);
+          _review.createdAt = this.datePipe.transform(newDate, "d/M/yyy H:mm")
+
+          for(const prop in _review){
+            if(this.loggedIn == true){
+              if( _review[prop].name == this.userLoggedIn){
+                this.userLeftReview = true;
+              }
+              console.log("in logged in if " + this.userLeftReview);
+            }
+          }
         });
       });
   }
@@ -116,5 +132,11 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   }
 
   goToHomePage() {
+  }
+
+  logout() {
+    this.userService.logout();
+    this.userLeftReview = false;
+    location.reload();
   }
 }
