@@ -11,11 +11,11 @@ import { HardwareComponent } from '../../interfaces/hardware-component';
 export class HardwareComponentsService {
 
   private endpoints: string[] = [
-    'powerSupply', 'case_fan', 'ram', 'mouse', 'keyboard', 'cpu_fan', 'case', 'storage', 'processor', 'gpu', 'motherboard'
+    'case_fan', 'ram', 'mouse', 'keyboard', 'cpu_fan', 'case', 'storage', 'processor', 'gpu', 'motherboard'
   ];
 
   private hardwareCategories: string[] = [
-    'Power Supply', 'Case Fan', 'RAM', 'Mouse', 'Keyboard', 'Cpu Fan', 'Case', 'Storage', 'Processor', 'GPU', 'Motherboard'
+    'Case Fan', 'RAM', 'Mouse', 'Keyboard', 'Cpu Fan', 'Case', 'Storage', 'Processor', 'GPU', 'Motherboard'
   ];
 
   public allHardware: BehaviorSubject<HardwareCategory[]> = new BehaviorSubject<HardwareCategory[]>([]);
@@ -34,10 +34,10 @@ export class HardwareComponentsService {
     this.getComponents();
   }
 
-  private async getComponents() {
+  private getComponents() {
     let tempAllHardware: HardwareCategory[] = [];
     for (let i = 0; i < this.endpoints.length; i++) {
-      await this.getComponentsByCategory(this.endpoints[i], 5, 0).then((hardwareComponents: HardwareComponent[]) => {
+      this.getComponentsByCategory(this.endpoints[i], 5, 0).then((hardwareComponents: HardwareComponent[]) => {
         const tempHardwareCategory = {
           endpoint: this.endpoints[i],
           category: this.hardwareCategories[i],
@@ -49,8 +49,8 @@ export class HardwareComponentsService {
     this.allHardware.next(tempAllHardware);
   }
 
-  private async getComponentsByCategory(endpoint: string, limit: number, offset: number): Promise<HardwareComponent[]> {
-    return await this.http.get<HardwareComponent[]>(`${environment.RAPID_API_URL}/${endpoint}?limit=${limit}&offset=${offset}`, this.options)
+  private getComponentsByCategory(endpoint: string, limit: number, offset: number): Promise<HardwareComponent[]> {
+    return this.http.get<HardwareComponent[]>(`${environment.RAPID_API_URL}/${endpoint}?limit=${limit}&offset=${offset}`, this.options)
     .toPromise();
   }
 

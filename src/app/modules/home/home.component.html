@@ -2,7 +2,10 @@
 
     <!-- Header -->
     <nz-header>
-        <h2 class="page-title" (click)="goToHomePage()">Hardware review</h2>
+        <button nz-button nzType="default" nzShape="circle" (click)="visible = !visible" style="margin-right: 20px;" class="drawer-btn">
+          <span nz-icon nzType="menu"></span>
+        </button>
+        <h2 class="page-title" (click)="goToHomePage()">RevWare</h2>
         <div class="home__header-buttons-wrapper" *ngIf="!loggedin">
             <app-modal-registration class="home__header-buttons"></app-modal-registration>
             <app-modal-login class="home__header-buttons"></app-modal-login>
@@ -15,7 +18,7 @@
 
     <!-- Sider -->
     <nz-layout>
-      <!-- <nz-sider nzWidth="275px">
+      <nz-sider nzWidth="275px">
         <ul nz-menu nzMode="inline" class="sider-menu">
 
           <li nz-menu-item (click)="selectHardwareCategory(-1)" [nzSelected]="selectedHardwareCategoryIndex === -1">All</li>
@@ -24,22 +27,54 @@
             <li nz-menu-item (click)="selectHardwareCategory(i)" [nzSelected]="i === selectedHardwareCategoryIndex">{{item?.category}}</li>
           </ng-container>
         </ul>
-      </nz-sider> -->
+      </nz-sider>
+
+      <!-- drawer -->
+      <nz-drawer
+        [nzClosable]="false"
+        [nzVisible]="visible"
+        nzPlacement="left"
+        nzTitle="Kategorije"
+        (nzOnClose)="visible = false"
+      >
+        <ng-container *nzDrawerContent>
+          <ul nz-menu nzMode="inline" class="sider-menu">
+
+            <li nz-menu-item
+              (click)="selectHardwareCategory(-1); visible = false"
+              [nzSelected]="selectedHardwareCategoryIndex === -1"
+              >
+              All
+            </li>
+
+            <ng-container *ngFor="let item of allHardware; let i = index;">
+              <li nz-menu-item (click)="selectHardwareCategory(i); visible = false"
+                [nzSelected]="i === selectedHardwareCategoryIndex"
+                >
+                {{item?.category}}
+              </li>
+            </ng-container>
+          </ul>
+        </ng-container>
+      </nz-drawer>
 
       <!-- Main content -->
       <nz-layout class="inner-layout">
-        <nz-breadcrumb>
+
+        <nz-breadcrumb style="margin-left: 20px;">
           <nz-breadcrumb-item><a (click)="selectHardwareCategory(-1)">Components</a></nz-breadcrumb-item>
           <nz-breadcrumb-item>{{selectedHardwareCategory?.category}}</nz-breadcrumb-item>
         </nz-breadcrumb>
 
         <nz-content>
-          <div>
+          <h1>{{selectedHardwareCategory?.category}}</h1>
 
-            <h1>{{selectedHardwareCategory?.category}}</h1>
-            <ng-container *ngFor="let item of selectedHardwareCategory.components">
+          <div class="home__cards-container">
+
+            <div *ngFor="let item of selectedHardwareCategory.components" class="home__card">
               <app-component-card [component]="item" [category]="selectedHardwareCategory?.category"></app-component-card>
-            </ng-container>
+            </div>
+
           </div>
         </nz-content>
 

@@ -6,3 +6,22 @@
 body {
   overflow-x: hidden;
 }
+
+
+.ant-drawer-header {
+  background: #E1E1E1;
+}
+
+.ant-drawer-content-wrapper {
+  width: 275px !important;
+}
+
+.ant-drawer-body {
+  padding-left: 0;
+  padding-right: 0;
+  background: #D2D1D1 !important;
+  overflow: hidden !important;
+  ul {
+    background: #D2D1D1 !important;
+  }
+}
