@@ -33,7 +33,9 @@
             <h2>Amazon link: <a href="{{selectedHardware?.link}}">{{selectedHardware?.link}}</a></h2>
             <h2>{{selectedHardware?.price}}$</h2>
 
-            <nz-rate [(ngModel)]="componentRate" (ngModelChange)="rateChange()" *ngIf="loggedIn == true && userLeftReview == false" nzAllowHalf></nz-rate>
+            <nz-rate [(ngModel)]="totalStar" *ngIf="loggedIn == false || userLeftReview == true" [disabled]="true"></nz-rate>
+            <p  *ngIf="loggedIn == false || userLeftReview == true">({{count}} reviews)</p>
+            <nz-rate [(ngModel)]="componentRate" (ngModelChange)="rateChange()" *ngIf="loggedIn == true && userLeftReview == false"></nz-rate>
             <button *ngIf="isAddReview == false && loggedIn == true && userLeftReview == false" nz-button nzType="primary" (click)="addReview()">Leave review</button>
 
             <div class="reviewAdd" *ngIf="isAddReview == true">

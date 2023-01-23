@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { getReview, Review } from 'src/app/interfaces/review';
 import { DatePipe, formatDate } from '@angular/common';
+import { compileSchema } from 'ajv/dist/compile';
 
 @Component({
   selector: 'app-hardware-detail',
@@ -31,6 +32,8 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   visible: boolean = false;
   userLeftReview: boolean = false;
   private userLoggedIn: string;
+  private totalStar: number = 0;
+  public count: number = 0;
 
   constructor(
     @Inject(ActivatedRoute) private route: ActivatedRoute,
@@ -89,26 +92,23 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
       review: this.userReview,
       star: this.componentRate
     }
-    this.componentReviews.forEach(review => {
-      if(review.user){
 
-      }
-    })
-    console.log(review)
     this.reviewService.addReview(review).then(() => {
-      this.getReviews();
+      this.getReviews()
     })
     this.isAddReview = false
-    
   }
 
   getReviews(){
+    var tempCount = 0;
       this.reviewService.getComponentReview(this.componentId).subscribe((result: getReview[]) => {
         this.componentReviews = result
         this.componentReviews.forEach(_review => {
           let newDate = new Date(_review.createdAt);
           _review.createdAt = this.datePipe.transform(newDate, "d/M/yyy H:mm")
-
+          tempCount++;
+          this.totalStar += _review.star;
+          console.log(this.totalStar + " " + _review.star);
           for(const prop in _review){
             if(this.loggedIn == true){
               if( _review[prop].name == this.userLoggedIn){
@@ -118,6 +118,8 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
             }
           }
         });
+        this.count = tempCount;
+        this.totalStar = this.totalStar / this.count;
       });
   }
 
