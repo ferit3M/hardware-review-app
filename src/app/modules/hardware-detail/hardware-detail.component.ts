@@ -28,6 +28,7 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
 
   public loggedIn: boolean;
   public format = 'dd/MM/yyyy hh:mm';
+  visible: boolean = false;
 
   constructor(
     @Inject(ActivatedRoute) private route: ActivatedRoute,
@@ -76,11 +77,16 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
 
   submitReview(){
     const review: Review = {
-      userId: 1,
+      userId: this.userService.getUserId(),
       componentId: this.componentId,
       review: this.userReview,
       star: this.componentRate
     }
+    this.componentReviews.forEach(review => {
+      if(review.user){
+
+      }
+    })
     console.log(review)
     this.reviewService.addReview(review).then(() => {
       this.getReviews();
@@ -107,5 +113,8 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
       this.selectedHardware = temp;
     console.log(this.selectedHardware);
 
+  }
+
+  goToHomePage() {
   }
 }

@@ -2,13 +2,19 @@
 
     <!-- Header -->
     <nz-header>
-        <!-- <div class="logo"></div> -->
-        <h2>Hardware review</h2>
-        <div class="home__header-buttons-wrapper">
+      <button nz-button nzType="default" nzShape="circle" (click)="visible = !visible" style="margin-right: 20px;" class="drawer-btn">
+        <span nz-icon nzType="menu"></span>
+      </button>
+      <h2 class="page-title" (click)="goToHomePage()">RevWare</h2>
+      <div class="home__header-buttons-wrapper" *ngIf="!loggedIn">
           <app-modal-registration class="home__header-buttons"></app-modal-registration>
           <app-modal-login class="home__header-buttons"></app-modal-login>
-        </div>
-    </nz-header>
+      </div>
+      <div class="home__welcome" *ngIf="loggedIn">
+        <h2>Welcome</h2>
+        <button nz-button [nzType]="'default'" (click)="logout()"><span>Logout</span></button>
+      </div>
+  </nz-header>
 
     <!-- Sider -->
     <nz-layout>
@@ -36,15 +42,15 @@
             </div>
 
             <div class="reviews">
-            <hr>
+              <h1>Reviews:</h1>
+           
+              <hr>
 
-            <h1>Reviews:</h1>
-
-            <div *ngFor="let review of componentReviews">
-                <p><strong>{{review.user.name}}:</strong><br> {{review.review}}</p>
-                <p><strong>Score: </strong><nz-rate [(ngModel)]="review.star"  [disabled]="true"></nz-rate> <br> <strong>Date: </strong>{{review.createdAt}}</p>
-                <br>
-            </div>
+              <div *ngFor="let review of componentReviews">
+                  <p><strong>{{review.user.name}}:</strong><br> {{review.review}}</p>
+                  <p><strong>Score: </strong><nz-rate [(ngModel)]="review.star"  [disabled]="true"></nz-rate> <br> <strong>Date: </strong>{{review.createdAt}}</p>
+                  <hr>
+              </div>
             </div>
 
         </nz-content>
