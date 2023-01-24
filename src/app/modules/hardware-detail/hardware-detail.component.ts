@@ -1,12 +1,11 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { HardwareComponent } from 'src/app/interfaces/hardware-component';
 import { HardwareComponentsService } from 'src/app/services/hardware-components/hardware-components.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ReviewService } from 'src/app/services/review/review.service';
 import { getReview, Review } from 'src/app/interfaces/review';
-import { DatePipe, formatDate } from '@angular/common';
-import { compileSchema } from 'ajv/dist/compile';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-hardware-detail',
@@ -19,8 +18,8 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   private HARDWARE_COMPONENT_KEY = 'component';
 
   public selectedHardware: HardwareComponent;
-  public componentRate: number = 2.5
-  public userReview: string
+  public componentRate: number = 0
+  public userReview: string = ""
   public isAddReview: boolean = false
 
   public category: string;
@@ -32,15 +31,18 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   visible: boolean = false;
   userLeftReview: boolean = false;
   private userLoggedIn: string;
-  private totalStar: number = 0;
+  public totalStar: number = 0;
   public count: number = 0;
+  public reviewErrorMessage: boolean = false;
+  public rateErrorMessage: boolean = false;
 
   constructor(
     @Inject(ActivatedRoute) private route: ActivatedRoute,
     private _hardwareComponents: HardwareComponentsService,
     private userService: UserService,
     private reviewService: ReviewService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private router: Router
   ) {
   }
 
@@ -76,10 +78,6 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
     localStorage.setItem(this.HARDWARE_COMPONENT_KEY, JSON.stringify(this.selectedHardware));
   }
 
-  rateChange(){
-    console.log(this.componentRate)
-  }
-
   addReview(){
     this.isAddReview = true
     console.log(this.isAddReview)
@@ -92,11 +90,23 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
       review: this.userReview,
       star: this.componentRate
     }
-
-    this.reviewService.addReview(review).then(() => {
-      this.getReviews()
-    })
-    this.isAddReview = false
+    console.log(review);
+    if(this.componentRate < 1 || Number.isNaN(this.componentRate)){
+      this.rateErrorMessage = true;
+    }
+    else if(this.userReview == ""){
+      this.reviewErrorMessage = true;
+      this.rateErrorMessage = false;
+    }
+    else{
+      this.reviewErrorMessage = false;
+      this.rateErrorMessage = false;
+      this.reviewService.addReview(review).then(() => {
+        this.getReviews()
+        location.reload()
+      })
+      this.isAddReview = false
+    }
   }
 
   getReviews(){
@@ -114,7 +124,6 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
               if( _review[prop].name == this.userLoggedIn){
                 this.userLeftReview = true;
               }
-              console.log("in logged in if " + this.userLeftReview);
             }
           }
         });
@@ -134,6 +143,7 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
   }
 
   goToHomePage() {
+    this.router.navigate(["/"])
   }
 
   logout() {
