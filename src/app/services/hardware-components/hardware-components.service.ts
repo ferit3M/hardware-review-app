@@ -34,10 +34,10 @@ export class HardwareComponentsService {
     this.getComponents();
   }
 
-  private async getComponents() {
+  private getComponents() {
     let tempAllHardware: HardwareCategory[] = [];
     for (let i = 0; i < this.endpoints.length; i++) {
-      await this.getComponentsByCategory(this.endpoints[i], 5, 0).then((hardwareComponents: HardwareComponent[]) => {
+      this.getComponentsByCategory(this.endpoints[i], 5, 0).then((hardwareComponents: HardwareComponent[]) => {
         const tempHardwareCategory = {
           endpoint: this.endpoints[i],
           category: this.hardwareCategories[i],

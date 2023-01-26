@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { UserService } from '../user/user.service';
 import { getReview, Review } from 'src/app/interfaces/review';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +20,7 @@ export class ReviewService {
    }
 
    addReview(body: Review){
-    return this.http.post(`${this.API_URL}/api/user/review`, body).toPromise().then((res: any) => {
+    return this.http.post(`${this.API_URL}/api/user/review`, body, this.userService.getAuthorizedOptions()).toPromise().then((res: any) => {
       console.log(res);
 
     }).catch(err => {console.log(err)});

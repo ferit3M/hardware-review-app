@@ -12,7 +12,6 @@ import en from '@angular/common/locales/en';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -32,6 +31,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { MenuOutline } from '@ant-design/icons-angular/icons';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { DatePipe } from '@angular/common';
 
 const icons: IconDefinition[] = [ MenuOutline ];
 
@@ -67,9 +67,11 @@ registerLocaleData(en);
     NzDrawerModule,
     NzIconModule.forRoot(icons),
     NzSpinModule,
+    NzIconModule.forRoot(icons)
   ],
   providers: [
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

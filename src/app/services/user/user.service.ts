@@ -20,7 +20,7 @@ export class UserService {
 
   private access_token: string = null;
   private id: number;
-  private name: BehaviorSubject<string> = new BehaviorSubject('');
+  name: BehaviorSubject<string> = new BehaviorSubject('');
   private email: string;
 
   constructor(

@@ -2,13 +2,19 @@
 
     <!-- Header -->
     <nz-header>
-        <!-- <div class="logo"></div> -->
-        <h2>Hardware review</h2>
-        <div class="home__header-buttons-wrapper">
+      <button nz-button nzType="default" nzShape="circle" (click)="visible = !visible" style="margin-right: 20px;" class="drawer-btn">
+        <span nz-icon nzType="menu"></span>
+      </button>
+      <h2 class="page-title" (click)="goToHomePage()">RevWare</h2>
+      <div class="home__header-buttons-wrapper" *ngIf="!loggedIn">
           <app-modal-registration class="home__header-buttons"></app-modal-registration>
           <app-modal-login class="home__header-buttons"></app-modal-login>
-        </div>
-    </nz-header>
+      </div>
+      <div class="home__welcome" *ngIf="loggedIn">
+        <h2>Welcome</h2>
+        <button nz-button [nzType]="'default'" (click)="logout()"><span>Logout</span></button>
+      </div>
+  </nz-header>
 
     <!-- Sider -->
     <nz-layout>
@@ -17,7 +23,6 @@
       <nz-layout class="inner-layout">
         <nz-breadcrumb>
           <nz-breadcrumb-item><a routerLink="">Components</a></nz-breadcrumb-item>
-          <nz-breadcrumb-item>{{category}}</nz-breadcrumb-item>
         </nz-breadcrumb>
         <nz-content>
             <h1>{{selectedHardware?.title}}</h1>
@@ -27,22 +32,37 @@
             <h2>Amazon link: <a href="{{selectedHardware?.link}}">{{selectedHardware?.link}}</a></h2>
             <h2>{{selectedHardware?.price}}$</h2>
 
-            <nz-rate [(ngModel)]="componentRate" (ngModelChange)="rateChange()" *ngIf="loggedIn == true" nzAllowHalf></nz-rate>
-            <button *ngIf="isAddReview == false && loggedIn == true" nz-button nzType="primary" (click)="addReview()">Leave review</button>
+            <nz-rate [(ngModel)]="totalStar" [disabled]="true"></nz-rate>
+            <p>({{count}} reviews)</p>
+            <button *ngIf="isAddReview == false && loggedIn == true && userLeftReview == false" nz-button nzType="primary" (click)="addReview()" style="margin-left: 0px;">Leave review</button>
 
-            <div class="reviewAdd" *ngIf="isAddReview == true">
+            <div class="reviewAdd" *ngIf="isAddReview == true"> 
                 <textarea style="margin-bottom: 15px;" rows="4" nz-input [(ngModel)]="userReview" ></textarea>
                 <button nz-button nzType="primary" (click)="submitReview()">Submit review</button>
+                <nz-rate [(ngModel)]="componentRate" style="margin-left: 10px;"></nz-rate>
+                <br><br>
+                <p *ngIf="reviewErrorMessage==true" class="errorMessages">Review cannot be empty!</p>
+                <p *ngIf="rateErrorMessage==true" class="errorMessages">Please choose a star rating!</p>
             </div>
 
             <div class="reviews">
-            <hr>
+              <h1>Reviews:</h1>
+           
+              <hr>
 
-            <h1>Reviews:</h1>
-            <div *ngFor="let review of componentReviews">
-                <p>{{review.user}}: {{review.review}}</p>
-                <p>{{review.star}}, date: {{review.createdAt}}</p>
-            </div>
+              <div *ngFor="let review of componentReviews" class="review">
+                <div *ngIf="review.user.name == userLoggedIn">
+                  <div style="background-color:rgb(255, 223, 212); padding: 5px;">
+                    <p><strong>{{review.user.name}}:</strong><br> {{review.review}}</p>
+                    <p><strong>Score: </strong><nz-rate [(ngModel)]="review.star"  [disabled]="true"></nz-rate> <br> <strong>Date: </strong>{{review.createdAt}}</p>
+                  </div>
+                </div>
+                <div *ngIf="review.user.name != userLoggedIn" style="padding: 5px;">
+                  <p><strong>{{review.user.name}}:</strong><br> {{review.review}}</p>
+                  <p><strong>Score: </strong><nz-rate [(ngModel)]="review.star"  [disabled]="true"></nz-rate> <br> <strong>Date: </strong>{{review.createdAt}}</p>
+                </div>
+                <hr>
+              </div>
             </div>
 
         </nz-content>
