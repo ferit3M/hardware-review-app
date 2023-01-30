@@ -2,10 +2,12 @@
 
     <!-- Header -->
     <nz-header>
-        <button nz-button nzType="default" nzShape="circle" (click)="visible = !visible" style="margin-right: 20px;" class="drawer-btn">
-          <span nz-icon nzType="menu"></span>
-        </button>
-        <h2 class="page-title">RevWare</h2>
+        <div>
+          <button nz-button nzType="default" nzShape="circle" (click)="visible = !visible" style="margin-right: 20px;" class="drawer-btn">
+            <span nz-icon nzType="menu"></span>
+          </button>
+          <h2 class="page-title">RevWare</h2>
+        </div>
         <div class="home__header-buttons-wrapper" *ngIf="!loggedin">
             <app-modal-registration class="home__header-buttons"></app-modal-registration>
             <app-modal-login class="home__header-buttons"></app-modal-login>
@@ -21,10 +23,13 @@
       <nz-sider nzWidth="275px">
         <ul nz-menu nzMode="inline" class="sider-menu">
 
-          <li nz-menu-item (click)="selectHardwareCategory(-1)" [nzSelected]="selectedHardwareCategoryIndex === -1">All</li>
+          <!-- <li nz-menu-item (click)="selectHardwareCategory(-1)" [nzSelected]="selectedHardwareCategoryIndex === -1">All</li> -->
 
-          <ng-container *ngFor="let item of allHardware; let i = index;">
+          <!-- <ng-container *ngFor="let item of allHardware; let i = index;">
             <li nz-menu-item (click)="selectHardwareCategory(i)" [nzSelected]="i === selectedHardwareCategoryIndex">{{item?.category}}</li>
+          </ng-container> -->
+          <ng-container *ngFor="let item of hardwareCategoriesNames; let i = index;">
+            <li nz-menu-item (click)="selectHardwareCategory(i)" [nzSelected]="i === selectedHardwareCategoryIndex">{{item}}</li>
           </ng-container>
         </ul>
       </nz-sider>
@@ -39,19 +44,11 @@
       >
         <ng-container *nzDrawerContent>
           <ul nz-menu nzMode="inline" class="sider-menu">
-
-            <li nz-menu-item
-              (click)="selectHardwareCategory(-1); visible = false"
-              [nzSelected]="selectedHardwareCategoryIndex === -1"
-              >
-              All
-            </li>
-
-            <ng-container *ngFor="let item of allHardware; let i = index;">
+            <ng-container *ngFor="let item of hardwareCategoriesNames; let i = index;">
               <li nz-menu-item (click)="selectHardwareCategory(i); visible = false"
                 [nzSelected]="i === selectedHardwareCategoryIndex"
                 >
-                {{item?.category}}
+                {{item}}
               </li>
             </ng-container>
           </ul>
@@ -63,12 +60,12 @@
 
         <div class="home__crumbs-and-search">
           <nz-breadcrumb style="margin-left: 20px;">
-            <nz-breadcrumb-item><a (click)="selectHardwareCategory(-1)">Components</a></nz-breadcrumb-item>
+            <nz-breadcrumb-item>Components</nz-breadcrumb-item>
             <nz-breadcrumb-item>{{selectedHardwareCategory?.category}}</nz-breadcrumb-item>
           </nz-breadcrumb>
 
           <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" class="input-group">
-            <input type="text" nz-input placeholder="Traži" (keyup)="search()" [(ngModel)]="searchTerm" />
+            <input type="text" nz-input placeholder="Traži" (ngModelChange)="search($event)" [(ngModel)]="searchTerm" />
           </nz-input-group>
           <ng-template #suffixIconButton>
             <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
@@ -78,16 +75,21 @@
         <nz-content class="home__content">
           <h1>{{selectedHardwareCategory?.category}}</h1>
 
-          <div class="home__content__spin-container" *ngIf="!dataArrived">
-            <nz-spin nzSimple [nzSize]="'large'" [nzSpinning]="!dataArrived" style="position: absolute;"></nz-spin>
+          <div class="home__content__spin-container" *ngIf="spinnerSpinning">
+            <nz-spin nzSimple [nzSize]="'large'"
+              [nzSpinning]="spinnerSpinning"
+              style="position: fixed; top: 50%;">
+            </nz-spin>
           </div>
 
           <div class="home__cards-container">
-            <div *ngFor="let item of selectedHardwareCategory.components" class="home__card">
-              <app-component-card [component]="item" [category]="selectedHardwareCategory?.category"></app-component-card>
+            <div *ngFor="let item of selectedHardwareCategory?.components" class="home__card">
+              <app-component-card [component]="item" [category]="selectedHardwareCategory.category"></app-component-card>
             </div>
-
           </div>
+
+          <button nz-button [nzType]="'default'" (click)="loadMore()">Load more...</button>
+
         </nz-content>
 
       </nz-layout>

@@ -11,6 +11,7 @@ nz-header {
     .page-title {
       @media only screen and (max-width: 600px) {
         display: none;
+        cursor: pointer;
       }
     }
 }
@@ -60,50 +61,50 @@ nz-sider ul {
 .waiting-cursor {
     cursor: progress !important;
   }
-  
+
   .home__welcome {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-  
+
     button {
       margin-left: 20px;
     }
   }
-  
+
   .home__cards-container {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-  
-  
-  
+
+
+
     @media only screen and (max-width: 600px) {
-  
+
     }
   }
-  
+
   .home__card {
     margin-bottom: 14px;
     width: #{calc(50% - 7px)};
-  
+
     &:nth-child(odd) {
       margin-right: 14px;
     }
-  
+
     @media only screen and (max-width: 992px) {
       width: 100%;
-  
+
       &:nth-child(odd) {
         margin-right: 0px;
       }
     }
   }
-  
+
   .drawer-btn {
     display: none;
-  
+
     @media only screen and (max-width: 1280px)  {
       display: block
     }
@@ -113,7 +114,7 @@ nz-sider ul {
 .ant-drawer-header {
     background: gray !important;
   }
-  
+
   :host::ng-deep .ant-drawer-header {
     background: gray !important;
   }
@@ -145,7 +146,7 @@ button{
 }
 
 .errorMessages{
-  color: red; 
+  color: red;
   margin-left: 20px;
 }
 

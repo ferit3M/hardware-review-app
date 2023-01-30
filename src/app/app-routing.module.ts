@@ -5,12 +5,8 @@ import { HomeComponent } from './modules/home/home.component';
 import { HardwareDetailComponent } from './modules/hardware-detail/hardware-detail.component';
 
 const routes: Routes = [
-    { path: '*', redirectTo: '', pathMatch: 'full' },
-    {
-        path: '',
-        component: HomeComponent
-    },
-    { path: 'hardware/:id', component: HardwareDetailComponent },
+    { path: '', component: HomeComponent },
+    { path: 'hardware/:id', component: HardwareDetailComponent }
 ];
 
 @NgModule({

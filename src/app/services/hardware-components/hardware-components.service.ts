@@ -10,11 +10,11 @@ import { HardwareComponent } from '../../interfaces/hardware-component';
 })
 export class HardwareComponentsService {
 
-  private endpoints: string[] = [
+  public endpoints: string[] = [
     'case_fan', 'ram', 'mouse', 'keyboard', 'cpu_fan', 'case', 'storage', 'processor', 'gpu', 'motherboard'
   ];
 
-  private hardwareCategories: string[] = [
+  public hardwareCategories: string[] = [
     'Case Fan', 'RAM', 'Mouse', 'Keyboard', 'Cpu Fan', 'Case', 'Storage', 'Processor', 'GPU', 'Motherboard'
   ];
 
@@ -31,13 +31,13 @@ export class HardwareComponentsService {
   constructor(
     private http: HttpClient
   ) {
-    this.getComponents();
+    //this.getComponents();
   }
 
-  private getComponents() {
+  /* private async getComponents() {
     let tempAllHardware: HardwareCategory[] = [];
     for (let i = 0; i < this.endpoints.length; i++) {
-      this.getComponentsByCategory(this.endpoints[i], 5, 0).then((hardwareComponents: HardwareComponent[]) => {
+      this.getComponentsByCategory(this.endpoints[i], 6, 0).then((hardwareComponents: HardwareComponent[]) => {
         const tempHardwareCategory = {
           endpoint: this.endpoints[i],
           category: this.hardwareCategories[i],
@@ -47,9 +47,9 @@ export class HardwareComponentsService {
       }, err => console.log(err) );
     }
     this.allHardware.next(tempAllHardware);
-  }
+  } */
 
-  private getComponentsByCategory(endpoint: string, limit: number, offset: number): Promise<HardwareComponent[]> {
+  public getComponentsByCategory(endpoint: string, limit: number, offset: number): Promise<HardwareComponent[]> {
     return this.http.get<HardwareComponent[]>(`${environment.RAPID_API_URL}/${endpoint}?limit=${limit}&offset=${offset}`, this.options)
     .toPromise();
   }

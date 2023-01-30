@@ -80,7 +80,6 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
 
   addReview(){
     this.isAddReview = true
-    console.log(this.isAddReview)
   }
 
   submitReview(){
@@ -90,7 +89,6 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
       review: this.userReview,
       star: this.componentRate
     }
-    console.log(review);
     if(this.componentRate < 1 || Number.isNaN(this.componentRate)){
       this.rateErrorMessage = true;
     }
@@ -118,7 +116,6 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
           _review.createdAt = this.datePipe.transform(newDate, "d/M/yyy H:mm")
           tempCount++;
           this.totalStar += _review.star;
-          console.log(this.totalStar + " " + _review.star);
           for(const prop in _review){
             if(this.loggedIn == true){
               if( _review[prop].name == this.userLoggedIn){
@@ -134,12 +131,9 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
 
   private loadSelectedComponentFromLocalStorage() {
     const temp: HardwareComponent = JSON.parse(localStorage.getItem(this.HARDWARE_COMPONENT_KEY)) as HardwareComponent;
-    console.log(temp);
 
     if (temp != null)
       this.selectedHardware = temp;
-    console.log(this.selectedHardware);
-
   }
 
   goToHomePage() {

@@ -11,21 +11,19 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  public selectedHardwareCategoryIndex: number = -1; // -1
+  spinnerSpinning = true;
 
-  public allHardware: HardwareCategory[];
+  hardwareCategoriesNames: string[];
 
-  public dataArrived: boolean = false;
+  public selectedHardwareCategoryIndex: number = 0;
+
+  public allHardware: HardwareCategory[] = new Array(this._hardwareComponents.endpoints.length);
 
   loggedin: boolean;
 
   searchTerm: string;
 
-  public selectedHardwareCategory: HardwareCategory = {
-    category: 'All',
-    endpoint: '',
-    components: []
-  };
+  public selectedHardwareCategory: HardwareCategory;
 
   visible: boolean = false;
 
@@ -35,49 +33,52 @@ export class HomeComponent implements OnInit {
     ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this._user.loggedin.subscribe((res: boolean) => {
       this.loggedin = res;
     });
 
-    this._hardwareComponents.allHardware.subscribe((res: HardwareCategory[]) => {
-      console.log(res);
+    this.hardwareCategoriesNames = this._hardwareComponents.hardwareCategories;
 
-      this.allHardware = res;
-      this.addComponentsToCategoryAll();
-      if (this.allHardware.length > 0) {
-        this.dataArrived = true;
-      }
+    for (let i = 0; i < this.hardwareCategoriesNames.length; i++) {
+
+      this._hardwareComponents.getComponentsByCategory(this._hardwareComponents.endpoints[i], 6, 0)
+      .then((res: HardwareComponent[]) => {
+        let tempHardware: HardwareCategory = {
+          category: this.hardwareCategoriesNames[i],
+          endpoint: this._hardwareComponents.endpoints[i],
+          components: res,
+          offsetsIncluded: 0
+        };
+        this.allHardware[i] = tempHardware;
+
+        if (i === this.selectedHardwareCategoryIndex){
+          this.selectedHardwareCategory = JSON.parse(JSON.stringify(this.allHardware[i])) as HardwareCategory;
+          this.spinnerSpinning = false;
+        }
+      });
+    }
+  }
+
+  getMoreComponentsForCategory(categoryIndex: number) {
+    console.log(this.allHardware[categoryIndex]);
+
+    const offset = this.allHardware[categoryIndex].offsetsIncluded + 1;
+    this._hardwareComponents.getComponentsByCategory(this._hardwareComponents.endpoints[categoryIndex], 6, offset)
+    .then((res: HardwareComponent[]) => {
+      this.allHardware[categoryIndex].components = this.allHardware[categoryIndex].components.concat(res);
+      this.allHardware[categoryIndex].offsetsIncluded = offset;
+      this.selectedHardwareCategory.components = [...this.allHardware[categoryIndex].components];
+      this.spinnerSpinning = false;
     });
   }
 
   public selectHardwareCategory(index: number) {
     this.selectedHardwareCategoryIndex = index;
+    let temp: HardwareCategory = Object.assign({}, this.allHardware[this.selectedHardwareCategoryIndex]);
+    this.selectedHardwareCategory = temp;
 
-    if (index === -1) {
-      this.addComponentsToCategoryAll();
-    } else {
-      let temp = this.allHardware[this.selectedHardwareCategoryIndex];
-      this.selectedHardwareCategory = temp;
-    }
-  }
-
-  private addComponentsToCategoryAll() {
-    let tempHardware: HardwareCategory = {
-      category: 'All',
-      endpoint: '',
-      components: []
-    };
-    const tempComponents: HardwareComponent[] = [];
-
-    for (let i = 0; i < this.allHardware.length; i++) {
-      this.allHardware[i].components.forEach((c: HardwareComponent) => {
-        tempComponents.push(c);
-      });
-
-    }
-    tempHardware.components = tempComponents;
-    this.selectedHardwareCategory = tempHardware;
+    this.searchTerm = '';
   }
 
   logout() {
@@ -101,19 +102,20 @@ export class HomeComponent implements OnInit {
   }
 
   private componentsForSearchOnCurrentlySelectedCategory(): HardwareComponent[] {
-    let components: HardwareComponent[];
-    if (this.selectedHardwareCategoryIndex === -1) {
-      components = [];
-      for (let i = 0; i < this.allHardware.length; i++)
-        components = components.concat(this.allHardware[i].components)
-    }
-    else
-      components = this.allHardware[this.selectedHardwareCategoryIndex].components;
-
+    let components: HardwareComponent[] = [];
+    components = JSON.parse(JSON.stringify(this.allHardware[this.selectedHardwareCategoryIndex].components)) as HardwareComponent[];
     return components;
   }
 
-  search() {
-    this.selectedHardwareCategory.components = this.filter(this.searchTerm, this.componentsForSearchOnCurrentlySelectedCategory());
+  search(query: string) {
+    if (query === '')
+      this.selectedHardwareCategory.components = this.componentsForSearchOnCurrentlySelectedCategory();
+    else
+      this.selectedHardwareCategory.components = this.filter(query, this.componentsForSearchOnCurrentlySelectedCategory());
+  }
+
+  loadMore() {
+    this.spinnerSpinning = true;
+    this.getMoreComponentsForCategory(this.selectedHardwareCategoryIndex);
   }
 }
