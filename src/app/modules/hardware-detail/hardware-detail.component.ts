@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HardwareComponent } from 'src/app/interfaces/hardware-component';
 import { HardwareComponentsService } from 'src/app/services/hardware-components/hardware-components.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -55,7 +55,11 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
     this.userService.loggedin.subscribe((result: boolean) => (this.loggedIn = result));
 
     this.componentId = this.route.snapshot.paramMap.get('id');
+    console.log(this.componentId);
+
     this.category = localStorage.getItem(this.HARDWARE_CATEGORY_KEY);
+    console.log(this.category);
+
     this.getReviews();
 
     if(this.loggedIn == true){
@@ -65,6 +69,8 @@ export class HardwareDetailComponent implements OnInit, OnDestroy {
     if (this.category == null)
       this._hardwareComponents.getComponentById(this.componentId).subscribe((res: HardwareComponent)=> {
         this.selectedHardware = res;
+        console.log(res);
+
         this.saveToLocalStorage();
       });
     else

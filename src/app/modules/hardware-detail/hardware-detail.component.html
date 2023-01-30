@@ -2,10 +2,7 @@
 
     <!-- Header -->
     <nz-header>
-      <!-- <button nz-button nzType="default" nzShape="circle" (click)="visible = !visible" style="margin-right: 20px;" class="drawer-btn">
-        <span nz-icon nzType="menu"></span>
-      </button> -->
-      <h2 class="page-title" (click)="goToHomePage()">RevWare</h2>
+      <h2 class="page-title" (click)="goToHomePage()" style="margin-right: 20px;">RateWare</h2>
       <div class="home__header-buttons-wrapper" *ngIf="!loggedIn">
           <app-modal-registration class="home__header-buttons"></app-modal-registration>
           <app-modal-login class="home__header-buttons"></app-modal-login>
@@ -21,7 +18,7 @@
 
       <!-- Main content -->
       <nz-layout class="inner-layout">
-        <nz-breadcrumb>
+        <nz-breadcrumb style="margin-left: 20px;">
           <nz-breadcrumb-item><a routerLink="">Components</a></nz-breadcrumb-item>
         </nz-breadcrumb>
         <nz-content>

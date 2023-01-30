@@ -2,11 +2,11 @@
 
     <!-- Header -->
     <nz-header>
-        <div>
+        <div style="display: flex; align-items: center;">
           <button nz-button nzType="default" nzShape="circle" (click)="visible = !visible" style="margin-right: 20px;" class="drawer-btn">
             <span nz-icon nzType="menu"></span>
           </button>
-          <h2 class="page-title">RevWare</h2>
+          <h2 class="page-title">RateWare</h2>
         </div>
         <div class="home__header-buttons-wrapper" *ngIf="!loggedin">
             <app-modal-registration class="home__header-buttons"></app-modal-registration>
@@ -22,12 +22,6 @@
     <nz-layout>
       <nz-sider nzWidth="275px">
         <ul nz-menu nzMode="inline" class="sider-menu">
-
-          <!-- <li nz-menu-item (click)="selectHardwareCategory(-1)" [nzSelected]="selectedHardwareCategoryIndex === -1">All</li> -->
-
-          <!-- <ng-container *ngFor="let item of allHardware; let i = index;">
-            <li nz-menu-item (click)="selectHardwareCategory(i)" [nzSelected]="i === selectedHardwareCategoryIndex">{{item?.category}}</li>
-          </ng-container> -->
           <ng-container *ngFor="let item of hardwareCategoriesNames; let i = index;">
             <li nz-menu-item (click)="selectHardwareCategory(i)" [nzSelected]="i === selectedHardwareCategoryIndex">{{item}}</li>
           </ng-container>

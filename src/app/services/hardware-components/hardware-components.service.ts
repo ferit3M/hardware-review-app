@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HardwareCategory } from '../../interfaces/hardware-category';
 import { HardwareComponent } from '../../interfaces/hardware-component';
@@ -31,40 +31,16 @@ export class HardwareComponentsService {
   constructor(
     private http: HttpClient
   ) {
-    //this.getComponents();
   }
-
-  /* private async getComponents() {
-    let tempAllHardware: HardwareCategory[] = [];
-    for (let i = 0; i < this.endpoints.length; i++) {
-      this.getComponentsByCategory(this.endpoints[i], 6, 0).then((hardwareComponents: HardwareComponent[]) => {
-        const tempHardwareCategory = {
-          endpoint: this.endpoints[i],
-          category: this.hardwareCategories[i],
-          components: hardwareComponents
-        }
-        tempAllHardware.push(tempHardwareCategory)
-      }, err => console.log(err) );
-    }
-    this.allHardware.next(tempAllHardware);
-  } */
 
   public getComponentsByCategory(endpoint: string, limit: number, offset: number): Promise<HardwareComponent[]> {
     return this.http.get<HardwareComponent[]>(`${environment.RAPID_API_URL}/${endpoint}?limit=${limit}&offset=${offset}`, this.options)
     .toPromise();
   }
 
-  public getComponentById(id: string): Observable<HardwareComponent> {
-    return this.allHardware.pipe(
-      map((res: HardwareCategory[]) => {
-        for (let i = 0; i < res.length; i++) {
-          for (let j = 0; j < res[i].components.length; j++) {
-            if (res[i].components[j].id === id)
-              return res[i].components[j];
-          }
-        }
-        return null;
-      })
-    )
+  transferComponent: HardwareComponent;
+
+  getComponentById(id: string): Observable<HardwareComponent> {
+    return of(this.transferComponent);
   }
 }
