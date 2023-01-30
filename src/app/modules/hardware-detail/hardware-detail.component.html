@@ -29,14 +29,14 @@
             <h2>Amazon link: <a href="{{selectedHardware?.link}}">{{selectedHardware?.link}}</a></h2>
             <h2>{{selectedHardware?.price}}$</h2>
 
-            <nz-rate [(ngModel)]="totalStar" [disabled]="true"></nz-rate>
-            <p>({{count}} reviews)</p>
+            <nz-rate [(ngModel)]="totalStar" [disabled]="true" style="padding:8px; background-color: #CACACA; border-radius: 5px;"></nz-rate>
+            <p style="margin-left: 2px; margin-top: 5px;">({{count}} reviews)</p>
             <button *ngIf="isAddReview == false && loggedIn == true && userLeftReview == false" nz-button nzType="primary" (click)="addReview()" style="margin-left: 0px;">Leave review</button>
 
             <div class="reviewAdd" *ngIf="isAddReview == true">
                 <textarea style="margin-bottom: 15px;" rows="4" nz-input [(ngModel)]="userReview" ></textarea>
                 <button nz-button nzType="primary" (click)="submitReview()">Submit review</button>
-                <nz-rate [(ngModel)]="componentRate" style="margin-left: 10px;"></nz-rate>
+                <nz-rate [(ngModel)]="componentRate" style="margin-left: 10px; padding:8px; background-color: #CACACA; border-radius: 5px;"></nz-rate>
                 <br><br>
                 <p *ngIf="reviewErrorMessage==true" class="errorMessages">Review cannot be empty!</p>
                 <p *ngIf="rateErrorMessage==true" class="errorMessages">Please choose a star rating!</p>
@@ -49,12 +49,12 @@
 
               <div *ngFor="let review of componentReviews" class="review">
                 <div *ngIf="review.user.name == userLoggedIn">
-                  <div style="background-color:rgb(255, 223, 212); padding: 5px;">
+                  <div style="background-color:rgb(240, 207, 195); padding: 5px; border-radius: 10px;">
                     <p><strong>{{review.user.name}}:</strong><br> {{review.review}}</p>
                     <p><strong>Score: </strong><nz-rate [(ngModel)]="review.star"  [disabled]="true"></nz-rate> <br> <strong>Date: </strong>{{review.createdAt}}</p>
                   </div>
                 </div>
-                <div *ngIf="review.user.name != userLoggedIn" style="padding: 5px;">
+                <div *ngIf="review.user.name != userLoggedIn" style="padding: 5px; ">
                   <p><strong>{{review.user.name}}:</strong><br> {{review.review}}</p>
                   <p><strong>Score: </strong><nz-rate [(ngModel)]="review.star"  [disabled]="true"></nz-rate> <br> <strong>Date: </strong>{{review.createdAt}}</p>
                 </div>
