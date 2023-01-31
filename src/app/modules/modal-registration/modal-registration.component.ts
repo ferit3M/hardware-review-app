@@ -35,6 +35,7 @@ export class ModalRegistrationComponent implements OnInit {
       this._user.register(this.validateForm.value).then((res: boolean) => {
         if (true)
           this.isVisible = false;
+          location.reload();
       });
     }
   }
