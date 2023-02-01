@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
           category: this.hardwareCategoriesNames[i],
           endpoint: this._hardwareComponents.endpoints[i],
           components: res,
-          offsetsIncluded: 0
+          offsetsIncluded: 1
         };
         this.allHardware[i] = tempHardware;
 
