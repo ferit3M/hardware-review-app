@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
           category: this.hardwareCategoriesNames[i],
           endpoint: this._hardwareComponents.endpoints[i],
           components: res,
-          offsetsIncluded: 1
+          offsetsIncluded: 0
         };
         this.allHardware[i] = tempHardware;
 
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
   getMoreComponentsForCategory(categoryIndex: number) {
     console.log(this.allHardware[categoryIndex]);
 
-    const offset = this.allHardware[categoryIndex].offsetsIncluded + 1;
+    const offset = this.allHardware[categoryIndex].offsetsIncluded + 6;
     this._hardwareComponents.getComponentsByCategory(this._hardwareComponents.endpoints[categoryIndex], 6, offset)
     .then((res: HardwareComponent[]) => {
       this.allHardware[categoryIndex].components = this.allHardware[categoryIndex].components.concat(res);
